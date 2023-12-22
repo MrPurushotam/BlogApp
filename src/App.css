@@ -1,38 +1,278 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Merienda&family=Afacad:wght@300;500;600&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    font-size: 1.8vh;
+    font-weight: 580;
+    font-family: 'Merienda', cursive;
+}
+.App{
+    margin: 0 auto;
+    width: 45%;
+    height: 90vh;
+    border: 1px solid black;
+    padding: 0.5vh;
+    overflow-y:auto ;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* NAVBAR */
+.nav-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100vw-2vh);
+    margin: 0 auto;
+    padding: 2vh 1vh;
+    border: 1px solid darkred;
+    background-color: rgba(0, 0, 0, 0.844);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.nav-child{
+    width: 40vw;
+    padding: 1vh;
+    display: flex;
+    justify-content:space-evenly;
+}
+.nav-login{
+    text-decoration: none;
+    font-size: 3vh;
+    font-weight: 600;
+    padding: 1vh;
+    background:linear-gradient(#c00021,#ff002b);
+    border-radius: 1vh;
+    color: #ffffff;
+}
+.link{
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+    font-size: 3vh;
+}
+.link:hover{
+    transition: color 2s ease;
+    color: rgba(255, 255, 0, 0.779);
+    text-decoration: underline;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Signin */
+.signin-choice{
+    border: 0.4vh solid black;
+    width: 60%;
+    height: 5%;
+    margin: 0.5vh auto;
+}
+.choose{
+    width: 43%;
+    padding: 3%;
+    font-size: 3vh;
+    text-shadow: 2px 2px 4px blue;
+    text-align: center;
+    display: inline-block;
 }
 
-.App-link {
-  color: #61dafb;
+.display-gif{
+    width: 90%;
+    height: 40vh;
+    max-height: 60vh;
+    padding: 1vh;
+    border: 0.3vh solid black;
+    margin: 1vh auto;
+    overflow: hidden;
+}
+.display-gif img{
+    width: 100%;
+    height: 100%;
+    background-position:center;
+    background-size:cover;
+    border: 1px solid black;
+}
+.form-type{
+    text-align: center;
+    font-size: 3vh;
+    font-weight: 600;
+}
+.login-form{
+    width: 60%;
+    height: auto;
+    max-height: 35vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    margin: 0 auto;
+}
+.login-form input{
+    display: block;
+    width: 70%;
+    margin: 0.5vh auto;
+}
+.login-form button{
+    display: block;
+    width: 75%;    
+    background-color: #219ebc;
+    font-size: 3.5vh;
+    margin: 1vh auto;
+    border-radius: 2vh;
+}
+.change-form-link{
+    display: block;
+    text-align: center;
+    padding: 0.5vh;
+    margin: 0 auto;
+}
+.singin-google-btn{
+    display: block;
+    font-weight: 650;
+    font-size: 3vh !important;
+    width: 100% !important;
+    padding: 1vh;
+    background-color:#f97b77 ;
+    background: linear-gradient(90deg,#4285f4,#db4437,#f4b400,#0f9d58);
+    background-size: 100%;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* write a blog page */
+.createpost-container{
+    width: 98%;
+    height: auto;
+    overflow-y: auto;
+    padding: 0.3vh;
+}
+
+.createpost-container label{
+    display: block;
+    margin: 1vh 0.5vh;
+    font-size: 3vh;
+}
+.blog-title{
+    width: 95%;
+    height: 5vh;
+    max-height: 20%;
+    font-weight: 700;
+    border: none;
+    border-bottom: 0.3vh solid grey;
+    padding: 1vh;
+    font-size: 2.5vh;
+    font-style:normal;
+}
+.blog-description .ql-container {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 50vh !important;
+}
+.blog-description .ql-editor {
+    font-size: 2vh;
+    font-family: 'Afacad','Merienda',sans-serif !important;
+    font-weight:lighter !important;
+    font-style: normal;
+    line-height: 1.5;
+    padding: 1vh;
+}
+.blog-post{
+    display: block;
+    margin: 1vh auto;
+    padding: 1.2vh;
+    font-weight: 600;
+    width: 95%;
+    background-color: rgba(208, 208, 208, 0.821);
+    border-radius: 0.5vh;
+    border: .2vh solid rgb(177, 169, 169);
+    cursor: pointer;
+}
+.blog-post:hover{
+    box-shadow: 1px 1px 7px black;
+}
+/* home */
+.container{
+    padding: 0.2vw;
+    margin: 1vh auto;
+    width: 95%;
+    border: 1px solid red;
+    border-radius: 0.5vh;
+    
+}
+.home-blog-container{
+    width: 100%;
+    display: flex;
+    flex-direction:column;
+    min-height: 10vh;
+}
+.blog-post-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.2vh 0.7vw;
+    padding-bottom: 0.2vh;
+    border-bottom: 0.3vh solid black;
+}
+.bp-uname{
+    font-size: 3vh;
+    font-weight: 600;
+}
+.delete-icon{
+    font-size: 3vh;
+}
+.bp-uname:hover{
+    text-decoration: underline;
+    color: rgb(0, 166, 255);
+    transition: color 0.5s ease;
+}
+.delete-icon:hover{
+    text-shadow: 1px 1px 7px red;
+    transition: text-shadow 0.3s ease-out;
+}
+.home-blog{
+    font-size: 2vh;
+    font-weight: 500;
+    height: auto;
+    padding: 0.5vh;
+    text-align: left;
+    font-family:Afacad,sans-serif ;
+    color: rgb(84, 83, 83);
+    word-wrap: break-word;
+    max-height: 45vh;
+    overflow-y:auto ;
+}
+.home-blog-title{
+    text-align: center;
+    font-weight: 600;
+    font-family:Afacad,sans-serif !important;
+    color: rgb(70, 67, 67);
+    font-size: 4vh;
+    margin: 0.4vh auto 0.7vh auto; 
+}
+.home-blog-date{
+    font-weight: 600;
+    font-size: 1.5vh;
+    text-align: right;
+    margin: 0.3vh 1vw 0.5vh auto;
+}
+.profile-update{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    margin: 1.5vh auto;
+}
+.profile-update label{
+    display: block;
+    margin: 1vh 0.5vh;
+    font-size: 3vh;
+}
+.update-username{
+    padding: 0.5vh;
+    font-size: 3vh;
+    font-weight: 400;
+    font-family:Afacad,sans-serif !important;
+}
+.update-btn{
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    padding: 1vh;
+    margin: 0.5vh auto;
 }
