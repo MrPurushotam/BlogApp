@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
 import Signin from "./component/signin";
 import Navbar from './component/navbar';
@@ -8,10 +8,13 @@ import Profile from "./component/profile";
 import "./app.css"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { auth } from './firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import Loader from './component/Loading';
 
 const property={
   position: "top-right",
-  autoClose: 5000,
+  autoClose: 4000,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
@@ -40,21 +43,49 @@ export const MessageToast = (type,message) => {
   }
 
 const App = () => {
-  const [isAuth,setIsAuth]=useState(window.localStorage.getItem('isAuth')?true:false)
-  return (
-    <Router>
-      <Navbar isAuth={isAuth}/>
-      <ToastContainer/>
-      <div className='App'>
-        <Routes>
-          <Route exact path='/' element={<Home isAuth={isAuth}/>}/>  
-          <Route exact path='/signin' element={<Signin isAuth={isAuth} setIsAuth={setIsAuth} />}/>  
-          <Route exact path='/write' element={<CreatePost isAuth={isAuth} />} />  
-          <Route exact path='/profile' element={<Profile isAuth={isAuth}/>} />  
-        </Routes> 
-      </div>
+  const [isAuth,setIsAuth]=useState(window.localStorage.getItem('isAuth')?true:false);
+  const [loading , setLaoding]=useState(true);
 
-     </Router>
+  useEffect(()=>{
+    function checkState (){
+      try {
+        onAuthStateChanged(auth,user=>{
+          if(user){
+            setIsAuth(true)
+          }else{
+            console.log("Forced Logged out")
+            window.localStorage.removeItem('isAuth')
+            setIsAuth(false)
+          }
+        })
+      } catch (error) {
+        console.log("Error occured")
+      }finally{
+        setLaoding(false)
+      }
+    } 
+      
+    checkState()
+  })
+
+
+  return (
+    <>
+      {loading && <Loader/>}
+      <Router>
+        <Navbar isAuth={isAuth} setIsAuth={setIsAuth} />
+        <div className='w-full h-auto overflow-y-auto overflow-x-hidden bg-sky-100  grid-pattern-bg '>
+        <ToastContainer/>
+          <Routes>
+            <Route exact path='/' element={<Home isAuth={isAuth}/>}/>
+            <Route exact path='/signin' element={<Signin isAuth={isAuth} setIsAuth={setIsAuth} />}/>
+            <Route exact path='/write' element={<CreatePost isAuth={isAuth} setIsAuth={setIsAuth} />} />  
+            <Route exact path='/profile' element={<Profile isAuth={isAuth}/>} />  
+          </Routes> 
+        </div>
+
+      </Router>
+    </>
   )
 }
 

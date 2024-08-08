@@ -23,3 +23,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+*.firebase*
+firebase.json
+src/firebase.js
+firestore.*
+firestore.indexes.json
+firestore.rules
+database.rules.json
+
+package-lock.json

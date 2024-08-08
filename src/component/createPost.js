@@ -1,85 +1,94 @@
-import React,{useEffect, useState} from 'react'
-import ReactQuill from 'react-quill'; 
+import React, { useEffect, useState } from 'react'
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { collection,addDoc } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { MessageToast } from '../App';
 import { useNavigate } from 'react-router-dom';
+import Loader from './Loading';
 
-const CreatePost = ({isAuth}) => {
-  const navigate=useNavigate()
-  const [data,setData]=useState({title:"",description:""})
-  const uploadBlog=async (e)=>{
+const CreatePost = ({ isAuth ,setIsAuth }) => {
+  const navigate = useNavigate()
+  const [data, setData] = useState({ title: "", description: "" })
+  const [loading ,setLoading]=useState(false)
+  const uploadBlog = async (e) => {
+    setLoading(true)
     e.preventDefault()
-    try{
-      const docRef=await addDoc(collection(db,"blogposts"),{
-        title:data.title,
-        description:data.description,
-        author:{name:auth.currentUser.displayName,id:auth.currentUser.uid,uploadDate:Date.now()}
+    try {
+      await addDoc(collection(db, "blogposts"), {
+        title: data.title,
+        description: data.description,
+        author: { name: auth.currentUser.displayName, id: auth.currentUser.uid, uploadDate: Date.now() }
       })
-      MessageToast("success","Blog Published!! Yepppee!")
+      MessageToast("success", "Blog Published!! Yepppee!")
       navigate('/')
-    }catch(err){
+    } catch (err) {
       console.log(err.message)
-      MessageToast("error",e.message)
+      MessageToast("error", e.message)
     }
+    setLoading(false)
   }
-  useEffect(()=>{
-    if(!isAuth){
+  useEffect(() => {
+    if (!isAuth) {
       navigate('/signin')
     }
-  },)
-  useEffect(()=>{
-    if(!auth.currentUser.displayName){
-      MessageToast("warning","Update Your User Name First")
+    if(!auth || !auth.currentUser){
+      window.localStorage.removeItem("isAuth")
+      setIsAuth(false)
+      navigate("/signin")
+    }
+    else if (!auth.currentUser.displayName) {
+      MessageToast("warning", "Update Your User Name First")
       navigate('/profile')
     }
   })
+
   const modules = {
     toolbar: [
       [{ 'header': [1, 2, false] }],
-      ['bold', 'italic', 'underline','strike', 'blockquote'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, 
-        {'indent': '-1'}, {'indent': '+1'}],
-      [{ 'script': 'sub'}, { 'script': 'super' }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' },
+      { 'indent': '-1' }, { 'indent': '+1' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
       [{ 'color': [] }, { 'background': [] }],
-      [{ 'align': [] }],  
+      [{ 'align': [] }],
     ]
-  } 
+  }
   const formats = [
     'header', 'bold', 'italic',
     'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent','script','sub',
-    'color','background','align'
+    'list', 'bullet', 'indent', 'script', 'sub',
+    'color', 'background', 'align'
   ]
   return (
-    <div>
-      <div className='createpost-container'>
-        <label>Add Blog Title</label>
-        <input type='text' 
-        style={{border:!data.title.trim()?"0.2vh solid red":""}}
-        className='blog-title' 
-        placeholder='Title...' 
-        value={data.title} 
-        onChange={(e)=>
-          {setData({...data,title:e.target.value})}
-        }
-        />
-        
-        <label>Add Blog Description</label>
-        <ReactQuill
-          style={{border:!data.description.trim()?"0.2vh solid red":""}}
-          className='blog-description'
-          theme="snow" modules={modules} 
-          formats={formats} 
-          value={data.description} 
-          onChange={(e)=>setData({...data,description:e})} 
-          placeholder="Create your personal blog..." 
-        />
+    <>
+      {loading && <Loader/>}
+      <div className='w-full h-screen overflow-hidden py-1 bg-sky-100/70'>
+        <div className='space-y-2 w-2/3 mx-auto h-auto border-2 border-black py-3 px-4'>
+          <label className='text-lg font-bold capitalize p-2'>Add Blog Title</label>
+          <input type='text'
+            style={{ border: !data.title.trim() ? "0.2vh solid red" : "0.2vh solid grey" }}
+            className='block text-base w-full py-2 px-3'
+            placeholder='Title...'
+            value={data.title}
+            onChange={(e) => { setData({ ...data, title: e.target.value }) }}
+          />
 
-        <button onClick={uploadBlog} className='blog-post' disabled={!data.title.trim() && !data.description.trim()}>Post BLog</button>
+          <label className='text-lg font-bold capitalize p-2'>Add Blog Description</label>
+          <ReactQuill
+            style={{ border: !data.description.trim() ? "0.2vh solid red" : "" }}
+            className='blog-description bg-white'
+            theme="snow" modules={modules}
+            formats={formats}
+            value={data.description}
+            onChange={(e) => setData({ ...data, description: e })}
+            placeholder="Create your personal blog..."
+          />
+
+          <button onClick={uploadBlog} className='border-2  bg-sky-400 hover:bg-sky-500 p-2 text-xl font-bold w-full mx-auto rounded-md' disabled={!data.title.trim() && !data.description.trim()}>Post Blog</button>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
