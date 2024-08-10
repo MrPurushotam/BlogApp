@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { collection, addDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase';
+import { auth, db, storage } from '../firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { MessageToast } from '../App';
 import { useNavigate } from 'react-router-dom';
 import Loader from './Loading';
 
-const CreatePost = ({ isAuth ,setIsAuth }) => {
+const CreatePost = ({ isAuth, setIsAuth }) => {
   const navigate = useNavigate()
   const [data, setData] = useState({ title: "", description: "" })
-  const [loading ,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false)
+  const quillRef = React.useRef()
+  
   const uploadBlog = async (e) => {
     setLoading(true)
     e.preventDefault()
@@ -24,10 +27,11 @@ const CreatePost = ({ isAuth ,setIsAuth }) => {
       navigate('/')
     } catch (err) {
       console.log(err.message)
-      MessageToast("error", e.message)
+      MessageToast("error", err.message)
     }
     setLoading(false)
   }
+
   useEffect(() => {
     if (!isAuth) {
       navigate('/signin')
@@ -41,51 +45,89 @@ const CreatePost = ({ isAuth ,setIsAuth }) => {
       MessageToast("warning", "Update Your User Name First")
       navigate('/profile')
     }
-  })
+  }, [isAuth, setIsAuth, navigate])
 
-  const modules = {
-    toolbar: [
-      [{ 'header': [1, 2, false] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' },
-      { 'indent': '-1' }, { 'indent': '+1' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'align': [] }],
-    ]
-  }
+  const imageHandler = useCallback(() => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files[0];
+      const quill = quillRef.current.getEditor();
+      const range = quill.getSelection(true);
+
+      setLoading(true);
+      try {
+        const storageRef = ref(storage, `blog-images/${Date.now()}_${file.name}`);
+        const snapshot = await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        quill.insertEmbed(range.index, 'image', downloadURL);
+        quill.setSelection(range.index + 1);
+        MessageToast("success", "Image uploaded successfully!");
+      } catch (error) {
+        console.error('Error uploading image: ', error);
+        MessageToast("error", "Failed to upload image");
+      }
+      setLoading(false);
+    };
+  }, []);
+
+  const modules = useMemo(() => ({
+    toolbar: {
+      container: [
+        [{ 'header': [1, 2, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' },
+        { 'indent': '-1' }, { 'indent': '+1' }],
+        ['link', 'image'],
+        [{ 'script': 'sub' }, { 'script': 'super' }],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'align': [] }],
+      ],
+      handlers: {
+        image: imageHandler
+      }
+    }
+  }), [imageHandler])
+
   const formats = [
     'header', 'bold', 'italic',
     'underline', 'strike', 'blockquote',
     'list', 'bullet', 'indent', 'script', 'sub',
-    'color', 'background', 'align'
+    'link', 'image', 'color', 'background', 'align'
   ]
+
   return (
     <>
       {loading && <Loader/>}
-      <div className='w-full h-screen overflow-hidden py-1 bg-sky-100/70'>
-        <div className='space-y-2 w-2/3 mx-auto h-auto border-2 border-black py-3 px-4'>
-          <label className='text-lg font-bold capitalize p-2'>Add Blog Title</label>
+      <div className='w-full h-screen overflow-hidden py-1 '>
+        <div className='space-y-2 w-2/3 mx-auto h-auto border-2 border-black py-3 px-4 bg-sky-100/70'>
+          <label className='text-xl font-bold capitalize p-2'>Add Blog Title</label>
           <input type='text'
             style={{ border: !data.title.trim() ? "0.2vh solid red" : "0.2vh solid grey" }}
-            className='block text-base w-full py-2 px-3'
+            className='block text-lg w-full py-2 px-3'
             placeholder='Title...'
             value={data.title}
             onChange={(e) => { setData({ ...data, title: e.target.value }) }}
           />
 
-          <label className='text-lg font-bold capitalize p-2'>Add Blog Description</label>
+          <label className='text-xl font-bold capitalize p-2'>Add Blog Description</label>
           <ReactQuill
+            ref={quillRef}
             style={{ border: !data.description.trim() ? "0.2vh solid red" : "" }}
-            className='blog-description bg-white'
-            theme="snow" modules={modules}
+            className='blog-description bg-white text-xl'
+            theme="snow" 
+            modules={modules}
             formats={formats}
             value={data.description}
             onChange={(e) => setData({ ...data, description: e })}
             placeholder="Create your personal blog..."
           />
 
-          <button onClick={uploadBlog} className='border-2  bg-sky-400 hover:bg-sky-500 p-2 text-xl font-bold w-full mx-auto rounded-md' disabled={!data.title.trim() && !data.description.trim()}>Post Blog</button>
+          <button onClick={uploadBlog} className='border-2  bg-sky-400 hover:bg-sky-500 p-2 text-2xl font-bold w-full mx-auto rounded-md' disabled={!data.title.trim() && !data.description.trim()}>Post Blog</button>
         </div>
       </div>
     </>

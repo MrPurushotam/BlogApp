@@ -32,9 +32,9 @@ const Profile = ({ isAuth }) => {
       {loading && <Loader />}
       <div className='w-full h-screen py-3'>
         <div className='mx-auto flex justify-center flex-col w-2/3 bg-sky-100/70 border-2 border-black rounded-sm py-3 px-2 space-y-2'>
-          <label htmlFor='username' className='font-semibold text-xl p-2'>Update Username</label>
-          <input className='border-2 border-gray-700/70 rounded-sm p-2' name='username' value={username} onChange={(e) => setUsername(e.target.value)} disabled={username} />
-          <button className='border-2  bg-sky-400 hover:bg-sky-500 p-2 text-xl font-bold w-1/2 mx-auto rounded-md' disabled={auth.currentUser?.displayName}
+          <label htmlFor='username' className='font-semibold text-2xl p-2'>Update Username</label>
+          <input className='text-xl border-2 border-gray-700/70 rounded-sm p-2' name='username' value={username} onChange={(e) => setUsername(e.target.value)} disabled={username} />
+          <button className='border-2  bg-sky-400 hover:bg-sky-500 p-2 text-2xl font-bold w-1/2 mx-auto rounded-md' disabled={auth.currentUser?.displayName}
             onClick={() => {
               updateUsername()
             }}>Update</button>

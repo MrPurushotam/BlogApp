@@ -111,9 +111,9 @@ const Signin = (props) => {
           </div>
 
           <h2 className='font-bold text-2xl px-3 mx-auto uppercase'>{login ? "Signin" : "Signup"}</h2>
-          <p className='text-sm font-medium text-center'>{login ? "Fill your details to login." : "Fill your details to create account."}</p>
+          <p className='text-lg font-medium text-center'>{login ? "Fill your details to login." : "Fill your details to create account."}</p>
 
-          <button className=" mx-auto w-1/2 flex items-center justify-center px-6 py-2 text-sm font-bold uppercase text-center align-middle rounded-lg border border-black/25 gap-3 text-gray-700 bg-white cursor-pointer transition-all duration-600 ease-in-out hover:scale-102"
+          <button className=" mx-auto w-1/2 flex items-center justify-center px-6 py-2 text-lg font-bold uppercase text-center align-middle rounded-lg border border-black/25 gap-3 text-gray-700 bg-white cursor-pointer transition-all duration-600 ease-in-out hover:scale-102"
             onClick={loginWithGoogle}>
             <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262">
               <path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"></path>
@@ -123,12 +123,12 @@ const Signin = (props) => {
             </svg>
             Continue with Google
           </button>
-          <p className='font-bold text-xl text-center p-1 '>OR</p>
+          <p className='font-bold text-2xl text-center p-1 '>OR</p>
           <div className='flex flex-col p-2 space-y-2 w-1/2 mx-auto '>
             {!login ? (
               <>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                  <label htmlFor="email" className="block text-lg font-medium text-gray-700">Email</label>
                   <input
                     autoFocus={true}
                     title='Email'
@@ -143,7 +143,7 @@ const Signin = (props) => {
                   />
                 </div>
                 <div >
-                  <label htmlFor='password' className="block text-sm font-medium text-gray-700">Password</label>
+                  <label htmlFor='password' className="block text-lg font-medium text-gray-700">Password</label>
                   <input
                     title='Password'
                     className={`w-full p-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 ${valid.password ? 'border-gray-300' : 'border-red-500'}`}
@@ -157,7 +157,7 @@ const Signin = (props) => {
                   />
                 </div>
                 <div >
-                  <label htmlFor='confirmPassword' className="block text-sm font-medium text-gray-700">Confirm Password</label>
+                  <label htmlFor='confirmPassword' className="block text-lg font-medium text-gray-700">Confirm Password</label>
                   <input
                     title='Retype Password'
                     className={`w-full p-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 ${valid.confirmPassword ? 'border-gray-300' : 'border-red-500'}`}
@@ -172,14 +172,14 @@ const Signin = (props) => {
                 </div>
 
                 <button
-                  className="text-xl py-2 font-bold mx-auto w-full bg-sky-500 text-white rounded-md shadow-sm hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 transition-colors"
+                  className="text-2xl py-2 font-bold mx-auto w-full bg-sky-500 text-white rounded-md shadow-sm hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 transition-colors"
                   onClick={submit}
                   disabled={disable || !(valid.email && valid.password && valid.confirmPassword)}
                 >
                   Signup
                 </button>
 
-                <span className='text-xl mx-auto'>
+                <span className='text-2xl mx-auto'>
                   Already have an account.
                   <Link
                     onClick={() => {
@@ -195,7 +195,7 @@ const Signin = (props) => {
             ) : (
               <>
                 <div className='space-y-1'>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                  <label htmlFor="email" className="block text-lg font-medium text-gray-700">Email</label>
                   <input
                     className={`w-full p-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 ${valid.email ? 'border-gray-300' : 'border-red-500'}`}
                     type="email"
@@ -208,7 +208,7 @@ const Signin = (props) => {
                   />
                 </div>
                 <div className='space-y-1'>
-                  <label htmlFor='password' className="block text-sm font-medium text-gray-700">Password</label>
+                  <label htmlFor='password' className="block text-lg font-medium text-gray-700">Password</label>
                   <input
                     className={`w-full p-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 ${valid.password ? 'border-gray-300' : 'border-red-500'}`}
                     type="password"
@@ -221,13 +221,13 @@ const Signin = (props) => {
                   />
                 </div>
                 <button
-                  className="text-xl py-2 font-bold mx-auto w-full bg-sky-500 text-white rounded-md shadow-sm hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 transition-colors"
+                  className="text-2xl py-2 font-bold mx-auto w-full bg-sky-500 text-white rounded-md shadow-sm hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 transition-colors"
                   onClick={submit}
                   disabled={disable || !valid.email}
                 >
                   Login
                 </button>
-                <span className='text-xl mx-auto'>
+                <span className='text-2xl mx-auto'>
                   Don't have an account.
                   <Link
                     onClick={() => {

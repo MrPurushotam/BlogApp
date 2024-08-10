@@ -28,8 +28,8 @@ const Navbar = (props) => {
   return (
     <>
       <div className='sticky top-0 z-20  w-full px-2 py-3 flex justify-between items-center bg-black'>
-        <div className='text-xl font-bold p-2 text-white cursor-pointer' onClick={() => navigate("/")}>Space</div>
-        <div className='text-lg font-semibold flex justify-center space-x-4 items-center text-white absolute left-[40%]'>
+        <div className='text-3xl font-bold p-2 text-white cursor-pointer' onClick={() => navigate("/")}>Space</div>
+        <div className='text-xl font-semibold flex justify-center space-x-4 items-center text-white absolute left-[40%]'>
           <Link to="/" className='blue-underline-hover'>Home</Link>
           <Link to="/profile" className='blue-underline-hover'>Profile</Link>
           <Link to="/write" className='blue-underline-hover'>Write</Link>
