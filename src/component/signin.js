@@ -105,15 +105,15 @@ const Signin = (props) => {
     <>
       {loading && <Loader />}
       <div className="w-full h-screen flex justify-center ">
-        <div className="min-h-2/3 h-full overflow-hidden w-1/2 rounded-sm border-2 border-black/90 flex flex-col space-y-2 bg-sky-100/65 ">
+        <div className="min-h-2/3 h-full overflow-hidden w-full sm:w-10/12 md:w-2/3 rounded-sm border-2 border-black/90 flex flex-col space-y-2 bg-sky-100/65 ">
           <div className='w-full relative h-[43vh] overflow-hidden p-3'>
             <img className='flex aspect-[3/2] mx-auto items-center justify-center h-full border-2 border-black rounded-md' alt='watch 👀' src={ads.current[decide.current]} />
           </div>
 
-          <h2 className='font-bold text-2xl px-3 mx-auto uppercase'>{login ? "Signin" : "Signup"}</h2>
-          <p className='text-lg font-medium text-center'>{login ? "Fill your details to login." : "Fill your details to create account."}</p>
+          <h2 className='font-bold text-lg sm:text-xl md:text-2xl px-3 mx-auto uppercase'>{login ? "Signin" : "Signup"}</h2>
+          <p className='text-base sm:text-lg md:text-xl font-medium text-center'>{login ? "Fill your details to login." : "Fill your details to create account."}</p>
 
-          <button className=" mx-auto w-1/2 flex items-center justify-center px-6 py-2 text-lg font-bold uppercase text-center align-middle rounded-lg border border-black/25 gap-3 text-gray-700 bg-white cursor-pointer transition-all duration-600 ease-in-out hover:scale-102"
+          <button className=" mx-auto w-1/2 flex items-center justify-center px-6 py-2 text-xs sm:text-sm  font-bold uppercase text-center align-middle rounded-lg border border-black/25 gap-3 text-gray-700 bg-white cursor-pointer transition-all duration-600 ease-in-out hover:scale-102"
             onClick={loginWithGoogle}>
             <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262">
               <path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"></path>
@@ -123,8 +123,8 @@ const Signin = (props) => {
             </svg>
             Continue with Google
           </button>
-          <p className='font-bold text-2xl text-center p-1 '>OR</p>
-          <div className='flex flex-col p-2 space-y-2 w-1/2 mx-auto '>
+          <p className='font-bold text-lg sm:text-xl md:text-2xl text-center p-1 '>OR</p>
+          <div className='flex flex-col p-2 space-y-2 w-10/12 sm:w-1/2 mx-auto '>
             {!login ? (
               <>
                 <div>
@@ -179,7 +179,7 @@ const Signin = (props) => {
                   Signup
                 </button>
 
-                <span className='text-2xl mx-auto'>
+                <span className='text-base sm:text-lg md:text-xl break-words mx-auto'>
                   Already have an account.
                   <Link
                     onClick={() => {
@@ -227,7 +227,7 @@ const Signin = (props) => {
                 >
                   Login
                 </button>
-                <span className='text-2xl mx-auto'>
+                <span className='text-base sm:text-lg md:text-xl break-words mx-auto'>
                   Don't have an account.
                   <Link
                     onClick={() => {

@@ -15,14 +15,6 @@
         @apply scale-x-100;
     }
 
-    .grid-pattern-bg {
-        @apply relative;
-        --color: rgba(0, 0, 0, 0.222);
-        background-image:
-            linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent),
-            linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent);
-        background-size: 55px 55px;
-    }
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Merienda&family=Afacad:wght@300;500;600&display=swap');
@@ -106,3 +98,17 @@
     line-height: 1.5;
     padding: 1vh;
 }
+
+.quill-content-wrapper .ql-editor {
+    font-size: 1.25rem; 
+    line-height: 1.75rem;
+    font-weight: 400;
+  }
+  
+  @media (min-width: 768px) {
+    .quill-content-wrapper .ql-editor {
+      font-size: 1.25rem; 
+      line-height: 1.75rem;
+      font-weight: 500;
+    }
+  }

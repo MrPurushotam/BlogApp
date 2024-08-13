@@ -104,7 +104,7 @@ const CreatePost = ({ isAuth, setIsAuth }) => {
     <>
       {loading && <Loader/>}
       <div className='w-full h-screen overflow-hidden py-1 '>
-        <div className='space-y-2 w-2/3 mx-auto h-auto border-2 border-black py-3 px-4 bg-sky-100/70'>
+        <div className='space-y-2 w-full sm:w-10/12 md:w-2/3 mx-auto h-auto sm:border-2 sm:border-black py-3 px-4 bg-sky-100/70'>
           <label className='text-xl font-bold capitalize p-2'>Add Blog Title</label>
           <input type='text'
             style={{ border: !data.title.trim() ? "0.2vh solid red" : "0.2vh solid grey" }}

@@ -74,7 +74,7 @@ const App = () => {
       {loading && <Loader/>}
       <Router>
         <Navbar isAuth={isAuth} setIsAuth={setIsAuth} />
-        <div className='w-full h-auto overflow-y-auto overflow-x-hidden bg-sky-100  grid-pattern-bg '>
+        <div className='w-full h-auto overflow-y-auto overflow-x-hidden bg-sky-100 '>
         <ToastContainer/>
           <Routes>
             <Route exact path='/' element={<Home isAuth={isAuth}/>}/>
