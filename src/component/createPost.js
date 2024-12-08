@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { collection, addDoc } from 'firebase/firestore';
 import { auth, db, storage } from '../firebase';
@@ -7,46 +7,51 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { MessageToast } from '../App';
 import { useNavigate } from 'react-router-dom';
 import Loader from './Loading';
+import ImageResize from 'quill-image-resize-module-react';
+
+// Register Image Resize module for Quill
+Quill.register('modules/imageResize', ImageResize);
 
 const CreatePost = ({ isAuth, setIsAuth }) => {
-  const navigate = useNavigate()
-  const [data, setData] = useState({ title: "", description: "" })
-  const [loading, setLoading] = useState(false)
-  const quillRef = React.useRef()
-  
+  const navigate = useNavigate();
+  const [data, setData] = useState({ title: "", description: "" });
+  const [loading, setLoading] = useState(false);
+  const quillRef = React.useRef();
+
+  // Upload Blog Function
   const uploadBlog = async (e) => {
-    setLoading(true)
-    e.preventDefault()
+    setLoading(true);
+    e.preventDefault();
     try {
       await addDoc(collection(db, "blogposts"), {
         title: data.title,
         description: data.description,
         author: { name: auth.currentUser.displayName, id: auth.currentUser.uid, uploadDate: Date.now() }
-      })
-      MessageToast("success", "Blog Published!! Yepppee!")
-      navigate('/')
+      });
+      MessageToast("success", "Blog Published!! Yepppee!");
+      navigate('/');
     } catch (err) {
-      console.log(err.message)
-      MessageToast("error", err.message)
+      console.error(err.message);
+      MessageToast("error", err.message);
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (!isAuth) {
-      navigate('/signin')
+      navigate('/signin');
     }
-    if(!auth || !auth.currentUser){
-      window.localStorage.removeItem("isAuth")
-      setIsAuth(false)
-      navigate("/signin")
+    if (!auth || !auth.currentUser) {
+      window.localStorage.removeItem("isAuth");
+      setIsAuth(false);
+      navigate("/signin");
+    } else if (!auth.currentUser.displayName) {
+      MessageToast("warning", "Update Your User Name First");
+      navigate('/profile');
     }
-    else if (!auth.currentUser.displayName) {
-      MessageToast("warning", "Update Your User Name First")
-      navigate('/profile')
-    }
-  }, [isAuth, setIsAuth, navigate])
+  }, [isAuth, setIsAuth, navigate]);
 
+  // Image Handler Function for Quill
   const imageHandler = useCallback(() => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -75,6 +80,7 @@ const CreatePost = ({ isAuth, setIsAuth }) => {
     };
   }, []);
 
+  // Quill Modules
   const modules = useMemo(() => ({
     toolbar: {
       container: [
@@ -83,27 +89,31 @@ const CreatePost = ({ isAuth, setIsAuth }) => {
         [{ 'list': 'ordered' }, { 'list': 'bullet' },
         { 'indent': '-1' }, { 'indent': '+1' }],
         ['link', 'image'],
+        [{ 'align': [] }, { 'image-align': ['left', 'center', 'right'] }],
         [{ 'script': 'sub' }, { 'script': 'super' }],
         [{ 'color': [] }, { 'background': [] }],
-        [{ 'align': [] }],
+        ['clean']
       ],
       handlers: {
         image: imageHandler
       }
+    },
+    imageResize: {
+      parchment: Quill.import('parchment'),
+      modules: ['Resize', 'DisplaySize', 'Toolbar']
     }
-  }), [imageHandler])
+  }), [imageHandler]);
 
   const formats = [
-    'header', 'bold', 'italic',
-    'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent', 'script', 'sub',
-    'link', 'image', 'color', 'background', 'align'
-  ]
+    'header', 'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent', 'script', 'sub', 'super', 
+    'link', 'image', 'color', 'background', 'align', 'image-align'
+  ];
 
   return (
     <>
-      {loading && <Loader/>}
-      <div className='w-full h-screen overflow-hidden py-1 '>
+      {loading && <Loader />}
+      <div className='w-full h-screen overflow-hidden py-1'>
         <div className='space-y-2 w-full sm:w-10/12 md:w-2/3 mx-auto h-auto sm:border-2 sm:border-black py-3 px-4 bg-sky-100/70'>
           <label className='text-xl font-bold capitalize p-2'>Add Blog Title</label>
           <input type='text'
@@ -119,7 +129,7 @@ const CreatePost = ({ isAuth, setIsAuth }) => {
             ref={quillRef}
             style={{ border: !data.description.trim() ? "0.2vh solid red" : "" }}
             className='blog-description bg-white text-xl'
-            theme="snow" 
+            theme="snow"
             modules={modules}
             formats={formats}
             value={data.description}
@@ -127,11 +137,11 @@ const CreatePost = ({ isAuth, setIsAuth }) => {
             placeholder="Create your personal blog..."
           />
 
-          <button onClick={uploadBlog} className='border-2  bg-sky-400 hover:bg-sky-500 p-2 text-2xl font-bold w-full mx-auto rounded-md' disabled={!data.title.trim() && !data.description.trim()}>Post Blog</button>
+          <button onClick={uploadBlog} className='border-2 bg-sky-400 hover:bg-sky-500 p-2 text-2xl font-bold w-full mx-auto rounded-md' disabled={!data.title.trim() && !data.description.trim()}>Post Blog</button>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CreatePost
+export default CreatePost;

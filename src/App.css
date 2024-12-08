@@ -3,112 +3,113 @@
 @tailwind utilities;
 
 @layer utilities {
-    .blue-underline-hover {
-        @apply relative;
-    }
+  .blue-underline-hover {
+    @apply relative;
+  }
 
-    .blue-underline-hover::after {
-        @apply content-[''] absolute bottom-0 left-0 h-[2px] w-full origin-bottom-left scale-x-0 bg-sky-400 transition-transform duration-300 ease-out;
-    }
+  .blue-underline-hover::after {
+    @apply content-[''] absolute bottom-0 left-0 h-[2px] w-full origin-bottom-left scale-x-0 bg-sky-400 transition-transform duration-300 ease-out;
+  }
 
-    .blue-underline-hover:hover::after {
-        @apply scale-x-100;
-    }
-
+  .blue-underline-hover:hover::after {
+    @apply scale-x-100;
+  }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Merienda&family=Afacad:wght@300;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Merienda&family=Afacad:wght@300;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
 
 * {
-    font-size: 3 vh;
-    font-family: 'Gupter', sans-serif;
+  font-size: 3 vh;
+  font-family: "Gupter", sans-serif;
 }
 
 /* Spinner code */
 .spinner {
-    width: 88px;
-    height: 88px;
-    animation: spinner-y0fdc1 2s infinite ease;
-    transform-style: preserve-3d;
+  width: 88px;
+  height: 88px;
+  animation: spinner-y0fdc1 2s infinite ease;
+  transform-style: preserve-3d;
 }
 
-.spinner>div {
-    background-color: #ffeb3b;
-    height: 100%;
-    position: absolute;
-    width: 100%;
-    border: 4px solid black;
+.spinner > div {
+  background-color: #ffeb3b;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  border: 4px solid black;
 }
 
 .spinner div:nth-of-type(1) {
-    transform: translateZ(-44px) rotateY(180deg);
+  transform: translateZ(-44px) rotateY(180deg);
 }
 
 .spinner div:nth-of-type(2) {
-    transform: rotateY(-270deg) translateX(50%);
-    transform-origin: top right;
+  transform: rotateY(-270deg) translateX(50%);
+  transform-origin: top right;
 }
 
 .spinner div:nth-of-type(3) {
-    transform: rotateY(270deg) translateX(-50%);
-    transform-origin: center left;
+  transform: rotateY(270deg) translateX(-50%);
+  transform-origin: center left;
 }
 
 .spinner div:nth-of-type(4) {
-    transform: rotateX(90deg) translateY(-50%);
-    transform-origin: top center;
+  transform: rotateX(90deg) translateY(-50%);
+  transform-origin: top center;
 }
 
 .spinner div:nth-of-type(5) {
-    transform: rotateX(-90deg) translateY(50%);
-    transform-origin: bottom center;
+  transform: rotateX(-90deg) translateY(50%);
+  transform-origin: bottom center;
 }
 
 .spinner div:nth-of-type(6) {
-    transform: translateZ(44px);
+  transform: translateZ(44px);
 }
 
 @keyframes spinner-y0fdc1 {
-    0% {
-        transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);
-    }
+  0% {
+    transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);
+  }
 
-    50% {
-        transform: rotate(45deg) rotateX(-385deg) rotateY(25deg);
-    }
+  50% {
+    transform: rotate(45deg) rotateX(-385deg) rotateY(25deg);
+  }
 
-    100% {
-        transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
-    }
+  100% {
+    transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
+  }
 }
 
 /* write a blog page */
 .blog-description .ql-container {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    height: 50vh !important;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-height: 50vh !important;
+  height: auto;
 }
 
 .blog-description .ql-editor {
-    font-size: 2.5vh;
-    font-family: 'Gupter', sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    line-height: 1.5;
-    padding: 1vh;
+  font-size: 2.5vh;
+  font-family: "Gupter", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1.5;
+  padding: 1vh;
+  height: auto;
 }
 
 .quill-content-wrapper .ql-editor {
-    font-size: 1.25rem; 
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 400;
+}
+
+@media (min-width: 768px) {
+  .quill-content-wrapper .ql-editor {
+    font-size: 1.25rem;
     line-height: 1.75rem;
-    font-weight: 400;
+    font-weight: 500;
   }
-  
-  @media (min-width: 768px) {
-    .quill-content-wrapper .ql-editor {
-      font-size: 1.25rem; 
-      line-height: 1.75rem;
-      font-weight: 500;
-    }
-  }
+}

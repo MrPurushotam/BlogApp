@@ -14,7 +14,7 @@ const Home = ({ isAuth }) => {
   const blogLimit=5;
   const isFetching=useRef(false)
 
-  const fetchBlogs=async (lastVisible=null)=>{
+  const fetchBlogs=useCallback(async (lastVisible=null)=>{
     if(!hasMore || isFetching.current) return;
     isFetching.current=true
     try {
@@ -48,11 +48,11 @@ const Home = ({ isAuth }) => {
       setContainerLoader(false)
       setLoading(false)
     }
-  }
+  },[hasMore,blogLimit])
   
   useEffect(() => {
-    fetchBlogs()
-  }, [])
+    fetchBlogs();
+  }, [fetchBlogs])
 
   const deleteThisPost = async (id) => {
     setLoading(true)
@@ -72,7 +72,7 @@ const Home = ({ isAuth }) => {
     if(window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 100 && !loading && hasMore && !isFetching.current){
       fetchBlogs(lastdoc)
     }
-  },[loading,hasMore,lastdoc])
+  },[loading,hasMore,lastdoc,fetchBlogs])
 
   useEffect(()=>{
     window.addEventListener("scroll",handleScroll)
@@ -89,7 +89,7 @@ const Home = ({ isAuth }) => {
           )
         })}
         {containerLoader && <SimpleLoader/>}
-        {!hasMore && !containerLoader && blogs.length > 0 && <p className="text-center mt-4">You have enterd to start</p>}
+        {!hasMore && !containerLoader && blogs.length > 0 && <p className="text-center mt-4">You have reached the top</p>}
       </div>
     </>
   )

@@ -1,5 +1,5 @@
-import React,{useEffect, useState} from 'react';
-import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Signin from "./component/signin";
 import Navbar from './component/navbar';
 import Home from './component/home';
@@ -11,8 +11,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import Loader from './component/Loading';
+import IndividualBlog from './component/IndividualBlog';
 
-const property={
+const property = {
   position: "top-right",
   autoClose: 4000,
   hideProgressBar: false,
@@ -23,36 +24,36 @@ const property={
   theme: "colored",
 }
 
-export const MessageToast = (type,message) => {
+export const MessageToast = (type, message) => {
   switch (type) {
-      case "success":
-        toast.success(message,property);
-        break;
-      case "info":
-        toast.info(message,property);
-        break;
-      case "warning":
-        toast.warning(message,property);
-        break;
-      case "error":
-        toast.error(message,property);
-        break;
-      default:
-        toast(message,property);
-    }
+    case "success":
+      toast.success(message, property);
+      break;
+    case "info":
+      toast.info(message, property);
+      break;
+    case "warning":
+      toast.warning(message, property);
+      break;
+    case "error":
+      toast.error(message, property);
+      break;
+    default:
+      toast(message, property);
   }
+}
 
 const App = () => {
-  const [isAuth,setIsAuth]=useState(window.localStorage.getItem('isAuth')?true:false);
-  const [loading , setLaoding]=useState(true);
+  const [isAuth, setIsAuth] = useState(window.localStorage.getItem('isAuth') ? true : false);
+  const [loading, setLaoding] = useState(true);
 
-  useEffect(()=>{
-    function checkState (){
+  useEffect(() => {
+    function checkState() {
       try {
-        onAuthStateChanged(auth,user=>{
-          if(user){
+        onAuthStateChanged(auth, user => {
+          if (user) {
             setIsAuth(true)
-          }else{
+          } else {
             console.log("Forced Logged out")
             window.localStorage.removeItem('isAuth')
             setIsAuth(false)
@@ -60,28 +61,29 @@ const App = () => {
         })
       } catch (error) {
         console.log("Error occured")
-      }finally{
+      } finally {
         setLaoding(false)
       }
-    } 
-      
+    }
+
     checkState()
   })
 
 
   return (
     <>
-      {loading && <Loader/>}
+      {loading && <Loader />}
       <Router>
         <Navbar isAuth={isAuth} setIsAuth={setIsAuth} />
         <div className='w-full h-auto overflow-y-auto overflow-x-hidden bg-sky-100 '>
-        <ToastContainer/>
+          <ToastContainer />
           <Routes>
-            <Route exact path='/' element={<Home isAuth={isAuth}/>}/>
-            <Route exact path='/signin' element={<Signin isAuth={isAuth} setIsAuth={setIsAuth} />}/>
-            <Route exact path='/write' element={<CreatePost isAuth={isAuth} setIsAuth={setIsAuth} />} />  
-            <Route exact path='/profile' element={<Profile isAuth={isAuth}/>} />  
-          </Routes> 
+            <Route exact path='/' element={<Home isAuth={isAuth} />} />
+            <Route exact path='/signin' element={<Signin isAuth={isAuth} setIsAuth={setIsAuth} />} />
+            <Route exact path='/write' element={<CreatePost isAuth={isAuth} setIsAuth={setIsAuth} />} />
+            <Route exact path='/profile' element={<Profile isAuth={isAuth} />} />
+            <Route exact path='/blog/:id' element={<IndividualBlog isAuth={isAuth} />} />
+          </Routes>
         </div>
 
       </Router>
